@@ -47,6 +47,9 @@ You need gitlfs now because I added images. If I had more time I would add actio
 
 # 10:30
 
+Powershell to metrics
+
+banged my ahead against a prometheus file issue. A tab snuck in. Implemented `prom_lint` target to warn me before I deploy. 
 # 11:00
 
 # Done

@@ -12,9 +12,16 @@ services:
     image: registry.mcd.com/mcfood_grafana:main
     ports:
       - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
   prometheus:
     depends_on:
       - node_exporter
     image: registry.mcd.com/mcfood_prometheus:main
     ports:
       - 9090:9090
+    volumes:
+      - prom_data:/data
+volumes:
+  grafana_data:
+  prom_data:

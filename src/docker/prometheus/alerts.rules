@@ -6,4 +6,4 @@ groups:
     for: 1m
   - alert: Textfile Error
     expr: node_textfile_scrape_error == 1
-	for: 1m
+    for: 1m
