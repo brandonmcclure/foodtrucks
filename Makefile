@@ -30,3 +30,6 @@ compose_up:
 
 compose_down:
 	@docker compose -f Docker-compose.yaml down
+
+pwsh_test:
+	. "$$env:USERPROFILE\.vscode\extensions\ms-vscode.powershell-2022.7.2\modules\PowerShellEditorServices\InvokePesterStub.ps1" -ScriptPath 'e:\Git\brandonmcclure\foodtrucks\src\Invoke-FoodTruckEtl\Invoke-FoodTruckEtl.Tests.ps1' -LineNumber 1 -Output 'FromPreference'

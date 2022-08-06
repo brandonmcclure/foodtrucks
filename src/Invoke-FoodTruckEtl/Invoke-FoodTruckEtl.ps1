@@ -1,8 +1,17 @@
+<#
+.Synopsis
+	Downloads a csv file with foodtruck permit information and loads metric definition from a local json file and produces prometheus metrics to alert us to when food truck permits expire. 
+.DESCRIPTION
+	To force a download of new csv data, manually delete the 'current_foodtruck.csv' file in the specified $tempDownloadLocation 
+.PARAMETER DownloadCSVUrl
+	if specified, will override the environment specific settings
+#>
 param(
-    $targetEnvironment = 'production'
+    $targetEnvironment = 'test'
     ,$promMetricPath = 'D:\metrics'
     ,$logLevel = "Debug"
 	,$DownloadCSVUrl
+	,$tempDownloadLocation = $env:Temp
 )
 Import-Module fc_core,fc_log -Force
 
@@ -21,6 +30,15 @@ try{
     )
     
     $stopwatchTotal = [System.Diagnostics.Stopwatch]::StartNew()
+
+	$csvDownloadPath = "$tempDownloadLocation\current_foodtruck.csv"
+	if(-not (Test-Path $csvDownloadPath) -or $reDownload){
+		Invoke-WebRequest -Uri $configuration.DownloadCSVUrl -OutFile $csvDownloadPath
+	}
+	else{
+		Write-Log "To download new data, manually delete the file at: $csvDownloadPath and run again" Warning
+	}
+	
 
     $stopwatchTotal.Stop()
     Write-Log "Script execution took: $($stopwatchTotal.Elapsed.TotalSeconds) seconds" Debug
