@@ -62,4 +62,13 @@ Next steps. I would love to stand up a RDS instance on AWS via terraform and loa
 
 # 11:00
 
+I wrote a simple module for the ECR deployment to attempt to reuse code. 
+
+I used my hosted minio instance as a backend for the state file. You will need to remove the `Backend` tag in the main.tf file, or set it up with your own S3 configuration. 
+
+Deploy ECR and publish our images via `makefile`. It is hardcoded to only publish `:latest` tag via a variable `PUBLISH_TAG` in the makefile. Update that variable and run `make publish` again to publish different tags 
+
+I could not figure out how to create a single repository with multiple registries, which is why there are separate cloud resources for each image. I also could not figure out IAM enough to be able to finish anything, so this is public access. 
+
+There are no special secrets in these images, and having them be public also helps others pull/test out this project. 
 # Done

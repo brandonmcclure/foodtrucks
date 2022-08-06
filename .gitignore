@@ -1,1 +1,8 @@
 mnt/*
+src/tf/.terraform.lock.hcl
+src/tf/.terraform/*
+src/tf/.terraform.tfstate.lock.info
+src/tf/terraform.tfstate
+src/tf/terraform.tfstate.backup
+src/tf/terraform.tfvars
+src/tf/bin/*

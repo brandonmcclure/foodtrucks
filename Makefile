@@ -6,9 +6,10 @@ endif
 
 .SHELLFLAGS := -NoProfile -Command
 
-REGISTRY_NAME := registry.mcd.com/
+REGISTRY_NAME := public.ecr.aws/z1d8m1n4/
 REPOSITORY_NAME :=
 TAG := :latest
+PUBLISH_TAG := :main
 
 all: build run compose_down compose_up
 
@@ -49,3 +50,22 @@ prom_lint:
 	docker run --rm --entrypoint /bin/promtool -v $${PWD}/src/docker/prometheus/:/mnt/:ro $(REGISTRY_NAME)mcfood_prometheus:latest check config /mnt/prometheus.yml
 
 test: prom_lint pwsh_test
+
+tf_destroy:
+	cd src/tf; terraform destroy 
+tf_init:
+	cd src/tf; terraform init
+tf_plan: tf_init getcommitid getbranchname
+	cd src/tf; terraform plan -out "bin/$(BRANCH_NAME)_$(COMMITID).tfplan"
+tf_apply: tf_plan
+	cd src/tf; terraform apply "bin/$(BRANCH_NAME)_$(COMMITID).tfplan"
+
+publish:
+	$(eval IMAGE_NAME = mcfood_prometheus)
+	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
+	$(eval IMAGE_NAME = mcfood_node_exporter)
+	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
+	$(eval IMAGE_NAME = mcfood_grafana)
+	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
+	$(eval IMAGE_NAME = mcfood_pwsh)
+	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
