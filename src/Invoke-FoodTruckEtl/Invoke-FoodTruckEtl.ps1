@@ -39,15 +39,18 @@ try{
 		Write-Log "To download new data, manually delete the file at: $csvDownloadPath and run again" Warning
 	}
 	
-	$data = Import-Csv -Path $csvDownloadPath  | where {$_.status -in ('APPROVED','ISSUES')}
+	$data = Import-Csv -Path $csvDownloadPath  | where {$_.status -in ('APPROVED','ISSUED')}
 
 	foreach ($location in $data){
-		$unixEpochTimer = ([int]([DateTime]::UtcNow - (new-object DateTime 1970, 1, 1, 0, 0, 0,([DateTimeKind]::Utc))).TotalSeconds).ToString()
+		$unixEpochTimer = ([int]([datetime]$location.ExpirationDate - (new-object DateTime 1970, 1, 1, 0, 0, 0,([DateTimeKind]::Utc))).TotalSeconds).ToString()
 
 		$instanceLabels = $StaticLabels
-		$instanceLabels += @("location=`"$($location.locationid)`"")
+		$instanceLabels += @(
+			"location=`"$($location.locationid)`"",
+			"Applicant=`"$($location.Applicant)`"",
+			"Schedule=`"$($location.Schedule)`"" )
 		$metrics += @(
-				,@{Name="location_expiration_epoch"; Description="How long did the job run for.";type="gauge"; value="$unixEpochTimer";labels=$StaticLabels}
+				,@{Name="location_expiration_epoch"; Description="When will this food truck's permit expire?";type="gauge"; value="$unixEpochTimer";labels=$instanceLabels}
 			)
 	}
     $stopwatchTotal.Stop()

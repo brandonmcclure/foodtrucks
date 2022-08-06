@@ -50,6 +50,16 @@ You need gitlfs now because I added images. If I had more time I would add actio
 Powershell to metrics
 
 banged my ahead against a prometheus file issue. A tab snuck in. Implemented `prom_lint` target to warn me before I deploy. 
+
+Updated the grafana dashboard with some viz with expression: `min(location_expiration_epoch{Applicant=~"$Applicant"}) by (Applicant) - time()`
+
+There is also a variable to let us pick our favorite food trucks to show us when their permit expires. 
+![picture 2](../.images/249e5ba0d55a835fe688a1b22c478377caf1bb17083e21cc572828c0e261ae75.png)  
+
+There is not alot of discrepancy in this expiration data. This data will become more rich as we run the job over time, and collect the changeing data/metrics. 
+
+Next steps. I would love to stand up a RDS instance on AWS via terraform and load this data into that for persistence outside of prometheus. That is not doable in 30 minutes, so I will instead setup AWS ECR registries for the docker images. (And github build actions for the whole thing?)
+
 # 11:00
 
 # Done
