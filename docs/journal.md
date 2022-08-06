@@ -24,3 +24,4 @@ Prometheus at: http://localhost:9090/targets?search=
 
 # 2
 
+Start the pwsh script. I want to setup a test framework quick so I can use that as a baseline for all my development. The `Get-ETLConfig.ps1` is a abstraction to make it very easy to codify and the confirm proper environment settings via testing. 
