@@ -8,7 +8,7 @@ As a connoisseur of food trucks, I would like to ensure that there are enough fo
 
 ## Dependencies
 
-Docker, pwsh core, gnu make
+Docker, pwsh core, gnu make, git
 
 ### Docker
 
@@ -22,6 +22,10 @@ I am targeting [powershell 7](https://docs.microsoft.com/en-us/shows/it-ops-talk
 
 I use [gnu make](https://www.gnu.org/software/make/) as a semantic layer and early prototype for CI. The [Makefile](Makefile) will be the main documentation for that thinking until I build github actions.
 
+### git
+
+You will need git and git-lfs to interact with this repo. If you do not have lfs, the only thing that will be affected is the documentation. 
+
 ### VS Code (Nice to have)
 
-I used VS Code for my development environment. The Docker, Gremlins tracker for Visual Studio Code, HashiCorp Terraform, and Powershell extensions are all very helpful. As is the ability to customize/write code snippets.
+I used VS Code for my development environment. The Docker, Gremlins tracker for Visual Studio Code, HashiCorp Terraform, and Powershell extensions are all very helpful. As is the ability to customize/write code snippets. Also MarkdownImage was great for streamlining images into markdown files

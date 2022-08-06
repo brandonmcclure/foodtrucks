@@ -1,0 +1,9 @@
+groups:
+- name: Batch signals
+  rules: 
+  - alert: Availability
+    expr: time() - max(data_data_instance_last_complete_epoch_seconds_diff) by (script_name) > max(data_data_instance_last_complete_slo_target_seconds) by (script_name)
+    for: 1m
+  - alert: Textfile Error
+    expr: node_textfile_scrape_error == 1
+	for: 1m
