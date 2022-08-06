@@ -70,5 +70,12 @@ Deploy ECR and publish our images via `makefile`. It is hardcoded to only publis
 
 I could not figure out how to create a single repository with multiple registries, which is why there are separate cloud resources for each image. I also could not figure out IAM enough to be able to finish anything, so this is public access. 
 
-There are no special secrets in these images, and having them be public also helps others pull/test out this project. 
+There are no special secrets in these images, and having them be public also helps others pull/test out this project.
+
 # Done
+
+## Immediate thoughts
+
+I enjoyed this challenge. Not having lint tools tripped me up when writing the prometheus config/alert rules. I want to test this out on another computer, because if I did this right then the only dependency to run this is docker. 
+
+I was hoping to get some github actions built out and demonstrate how I would use them to build a gated CI to give me feedback that my changes will not break anything. I am hopeful that the Makefile is expressive enough to document how that CI process should look. 
