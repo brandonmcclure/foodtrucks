@@ -39,7 +39,17 @@ try{
 		Write-Log "To download new data, manually delete the file at: $csvDownloadPath and run again" Warning
 	}
 	
+	$data = Import-Csv -Path $csvDownloadPath  | where {$_.status -in ('APPROVED','ISSUES')}
 
+	foreach ($location in $data){
+		$unixEpochTimer = ([int]([DateTime]::UtcNow - (new-object DateTime 1970, 1, 1, 0, 0, 0,([DateTimeKind]::Utc))).TotalSeconds).ToString()
+
+		$instanceLabels = $StaticLabels
+		$instanceLabels += @("location=`"$($location.locationid)`"")
+		$metrics += @(
+				,@{Name="location_expiration_epoch"; Description="How long did the job run for.";type="gauge"; value="$unixEpochTimer";labels=$StaticLabels}
+			)
+	}
     $stopwatchTotal.Stop()
     Write-Log "Script execution took: $($stopwatchTotal.Elapsed.TotalSeconds) seconds" Debug
     $metrics += @(
