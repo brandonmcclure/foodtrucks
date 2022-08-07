@@ -8,12 +8,17 @@ As a connoisseur of food trucks, I would like to ensure that there are enough fo
 
 ## Dependencies
 
-Docker, pwsh core, gnu make, git
+to run: Docker
+
+To develop: terrafrom, pwsh core, gnu make, git, vscode
 
 ### Docker
 
-The prometheus stack will run as a docker compose file running our own linux based images. See the [docker documentation](https://docs.docker.com/engine/install/) for how to install. I am using [docker desktop on windows](https://docs.docker.com/desktop/install/windows-install/)
+The prometheus stack will run as a docker compose file running our own linux based images which should be publicly available . See the [docker documentation](https://docs.docker.com/engine/install/) for how to install. I am using [docker desktop on windows](https://docs.docker.com/desktop/install/windows-install/)
 
+### terrafrom
+
+I am using terraform to deploy the AWS ECR resources. I am a big fan of installing via [chocolatey](https://community.chocolatey.org/packages/terraform). 
 ### pwsh core
 
 I am targeting [powershell 7](https://docs.microsoft.com/en-us/shows/it-ops-talk/how-to-install-powershell-7), or more generally pwsh core. My favorite way to keep pwsh maintained is through a [chocolatey package](https://community.chocolatey.org/packages/pwsh)
