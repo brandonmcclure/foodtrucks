@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   node_exporter:
-    image: public.ecr.aws/z1d8m1n4//mcfood_node_exporter:main
+    image: public.ecr.aws/z1d8m1n4/mcfood_node_exporter:main
     volumes:
       - ./mnt/prom:/mnt/prom
     ports:
@@ -9,7 +9,7 @@ services:
   grafana:
     depends_on:
       - prometheus
-    image: public.ecr.aws/z1d8m1n4//mcfood_grafana:main
+    image: public.ecr.aws/z1d8m1n4/mcfood_grafana:main
     ports:
       - 3000:3000
     volumes:
@@ -17,7 +17,7 @@ services:
   prometheus:
     depends_on:
       - node_exporter
-    image: public.ecr.aws/z1d8m1n4//mcfood_prometheus:main
+    image: public.ecr.aws/z1d8m1n4/mcfood_prometheus:main
     ports:
       - 9090:9090
     volumes:
