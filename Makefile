@@ -10,8 +10,9 @@ REGISTRY_NAME := public.ecr.aws/z1d8m1n4/
 REPOSITORY_NAME :=
 TAG := :latest
 PUBLISH_TAG := :main
+CS_SA_PASSWORD := we@kPassw0rd
 
-all: prom_lint build run compose_down compose_up
+all: prom_lint build compose_down compose_up
 
 getcommitid:
 	$(eval COMMITID = $(shell git log -1 --pretty=format:'%H'))
@@ -28,6 +29,9 @@ build: getcommitid getbranchname
 	docker build -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(TAG) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME)_$(COMMITID) ./src/docker/grafana
 	$(eval IMAGE_NAME = mcfood_pwsh)
 	docker build -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(TAG) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME)_$(COMMITID) ./src/Invoke-FoodTruckEtl
+	$(eval IMAGE_NAME = mcfood_sql)
+	docker build --build-arg CD_SA_PASSWORD=$(CS_SA_PASSWORD) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(TAG) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME)_$(COMMITID) ./src/docker/mssql
+	
 
 run_it:
 	docker run -it $(REGISTRY_NAME)mcfood_pwsh:latest 

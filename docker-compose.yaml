@@ -1,9 +1,20 @@
 version: "3.5"
 services:
+  pwsh_etl: 
+    image: public.ecr.aws/z1d8m1n4/mcfood_pwsh:latest
+    volumes:
+      - etl_csv:/mnt/csv
+      - etl_node_textdir:/mnt/prom
+    command: pwsh -F /src/Invoke-FoodTruckEtl.ps1 -promMetricPath /mnt/prom -tempDownloadLocation /mnt/csv
+    restart: always
+  ms_sql:
+    image: public.ecr.aws/z1d8m1n4/mcfood_sql:main
+    ports:
+      - 1433:1433
   node_exporter:
     image: public.ecr.aws/z1d8m1n4/mcfood_node_exporter:main
     volumes:
-      - ./mnt/prom:/mnt/prom
+      - etl_node_textdir:/mnt/prom
     ports:
       - 9100:9100
   grafana:
@@ -14,6 +25,7 @@ services:
       - 3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
+      - etl_csv:/mnt/etl_csv
   prometheus:
     depends_on:
       - node_exporter
@@ -25,3 +37,5 @@ services:
 volumes:
   grafana_data:
   prom_data:
+  etl_csv:
+  etl_node_textdir:

@@ -13,7 +13,7 @@ param(
 	,$DownloadCSVUrl
 	,$tempDownloadLocation = $env:Temp
 )
-Import-Module fc_core,fc_log -Force
+Import-Module fc_core,fc_log,dbatools -Force
 
 Set-LogLevel $logLevel
 
@@ -53,6 +53,12 @@ try{
 				,@{Name="location_expiration_epoch"; Description="When will this food truck's permit expire?";type="gauge"; value="$unixEpochTimer";labels=$instanceLabels}
 			)
 	}
+	[string]$userName = 'sa'
+	
+	# Convert to SecureString
+	[securestring]$secStringPassword = ConvertTo-SecureString 'we@kPassw0rd' -AsPlainText -Force
+	[pscredential]$creds = New-Object System.Management.Automation.PSCredential ($userName, $secStringPassword)
+	Import-DbaCsv -Path $csvDownloadPath -SqlInstance 'ms_sql' -SqlCredential $creds -Database 'foodtrucks' -Table "mostrecent_raw" -Schema "dbo" -Truncate -AutoCreateTable 
     $stopwatchTotal.Stop()
     Write-Log "Script execution took: $($stopwatchTotal.Elapsed.TotalSeconds) seconds" Debug
     $metrics += @(
@@ -61,6 +67,7 @@ try{
 	Invoke-PrometheusBatchEnding -textFileDir $promMetricPath -SLO_InstanceShouldRunEveryXSeconds 3600 -domain 'data' -metrics $metrics # Should run every 1 hour
 
 	Invoke-UnixLineEndings -directory $promMetricPath
+	sleep (5*60)
 }
 catch{
     $ex = $_.Exception
