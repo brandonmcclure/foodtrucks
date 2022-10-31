@@ -73,3 +73,6 @@ publish:
 	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
 	$(eval IMAGE_NAME = mcfood_pwsh)
 	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
+
+build_presentation:
+	cd docs; docker run --workdir /mnt -v $${pwd}:/mnt pandoc/latex '/mnt/presentation.md' --embed-resources --standalone -t beamer -o /mnt/presentation.pdf;
