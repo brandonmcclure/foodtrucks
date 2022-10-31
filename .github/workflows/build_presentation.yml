@@ -26,12 +26,16 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - uses: addnab/docker-run-action@v3
+      - uses: docker://pandoc/latex
         with:
-          image: pandoc/latex:latest
-          options: --user root --workdir /mnt -v ${{ github.workspace }}/docs:/mnt
-          run: |
-            '/mnt/presentation.md' --embed-resources --standalone -t beamer -o /mnt/presentation.pdf;
+          args: >-
+            --workdir /mnt
+            -v ${{ github.workspace }}/docs:/mnt
+            '/mnt/presentation.md' 
+            --embed-resources
+            --standalone
+            -t beamer
+            -o /mnt/presentation.pdf;
       - name: Artifact prep - all
         run: |
           sudo cp -r docs/presentation.pdf bin/presentation.pdf
