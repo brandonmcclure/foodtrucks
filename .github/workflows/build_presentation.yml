@@ -4,16 +4,16 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main  # Trigger CI on main branch
-    paths: 
-      - 'docs/**'
-      - '.github/workflows/build_presentation.yml'
+      - main # Trigger CI on main branch
+    paths:
+      - "docs/**"
+      - ".github/workflows/build_presentation.yml"
   pull_request:
     branches:
-      - main  # Trigger gated pipeline on PR to main
+      - main # Trigger gated pipeline on PR to main
     paths:
-      - 'docs/**'
-      - '.github/workflows/build_presentation.yml'
+      - "docs/**"
+      - ".github/workflows/build_presentation.yml"
 
 jobs:
   build_pdf:
@@ -25,16 +25,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1 
+          fetch-depth: 1
       - uses: addnab/docker-run-action@v3
         with:
           image: pandoc/latex:latex
-          options:  --workdir /mnt -v ${{ github.workspace }}/docs:/mnt
+          options: --workdir /mnt -v ${{ github.workspace }}/docs:/mnt
           run: |
-             '/mnt/presentation.md' --embed-resources --standalone -t beamer -o /mnt/presentation.pdf;
+            '/mnt/presentation.md' --embed-resources --standalone -t beamer -o /mnt/presentation.pdf;
       - name: Artifact prep - all
-        run: | 
-          sudo cp -r docs/presentation.pdf bin/presentation.pdf 
+        run: |
+          sudo cp -r docs/presentation.pdf bin/presentation.pdf
       - name: Archive production artifacts - all
         uses: actions/upload-artifact@v3
         with:
