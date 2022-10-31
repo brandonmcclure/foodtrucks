@@ -6,3 +6,5 @@ src/tf/terraform.tfstate
 src/tf/terraform.tfstate.backup
 src/tf/terraform.tfvars
 src/tf/bin/*
+*.pdf
+megalinter-reports/*
