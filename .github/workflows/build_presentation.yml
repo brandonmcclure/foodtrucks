@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 1
       - uses: addnab/docker-run-action@v3
         with:
-          image: pandoc/latex:latex
+          image: pandoc/latex:latest
           options: --workdir /mnt -v ${{ github.workspace }}/docs:/mnt
           run: |
             '/mnt/presentation.md' --embed-resources --standalone -t beamer -o /mnt/presentation.pdf;
