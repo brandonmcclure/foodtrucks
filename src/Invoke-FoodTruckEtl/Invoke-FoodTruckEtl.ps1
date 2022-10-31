@@ -32,12 +32,7 @@ try{
     $stopwatchTotal = [System.Diagnostics.Stopwatch]::StartNew()
 
 	$csvDownloadPath = "$tempDownloadLocation\current_foodtruck.csv"
-	if(-not (Test-Path $csvDownloadPath) -or $reDownload){
-		Invoke-WebRequest -Uri $configuration.DownloadCSVUrl -OutFile $csvDownloadPath
-	}
-	else{
-		Write-Log "To download new data, manually delete the file at: $csvDownloadPath and run again" Warning
-	}
+	Invoke-WebRequest -Uri $configuration.DownloadCSVUrl -OutFile $csvDownloadPath
 	
 	$data = Import-Csv -Path $csvDownloadPath  | where {$_.status -in ('APPROVED','ISSUED')}
 
