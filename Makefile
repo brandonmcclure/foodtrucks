@@ -10,8 +10,10 @@ REGISTRY_NAME := public.ecr.aws/z1d8m1n4/
 REPOSITORY_NAME :=
 TAG := :latest
 PUBLISH_TAG := :main
+CS_SA_PASSWORD := we@kPassw0rd
 
-all: prom_lint build run compose_down compose_up
+.PHONY: all test lint clean publish build
+all: prom_lint build compose_down compose_up
 
 getcommitid:
 	$(eval COMMITID = $(shell git log -1 --pretty=format:'%H'))
@@ -19,15 +21,23 @@ getcommitid:
 getbranchname:
 	$(eval BRANCH_NAME = $(shell (git branch --show-current ) -replace '/','.'))
 
-build: getcommitid getbranchname
+build: getcommitid getbranchname build_prometheus build_nodeexporter build_grafana build_pwsh build_sql
+build_prometheus:
 	$(eval IMAGE_NAME = mcfood_prometheus)
 	docker build -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(TAG) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME)_$(COMMITID) ./src/docker/prometheus
+build_nodeexporter:
 	$(eval IMAGE_NAME = mcfood_node_exporter)
 	docker build -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(TAG) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME)_$(COMMITID) ./src/docker/node_exporter
+build_grafana:
 	$(eval IMAGE_NAME = mcfood_grafana)
 	docker build -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(TAG) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME)_$(COMMITID) ./src/docker/grafana
+build_pwsh:
 	$(eval IMAGE_NAME = mcfood_pwsh)
 	docker build -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(TAG) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME)_$(COMMITID) ./src/Invoke-FoodTruckEtl
+build_sql:
+	$(eval IMAGE_NAME = mcfood_sql)
+	docker build --build-arg CD_SA_PASSWORD=$(CS_SA_PASSWORD) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(TAG) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME) -t $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME):$(BRANCH_NAME)_$(COMMITID) ./src/docker/mssql
+	
 
 run_it:
 	docker run -it $(REGISTRY_NAME)mcfood_pwsh:latest 
@@ -60,12 +70,31 @@ tf_plan: tf_init getcommitid getbranchname
 tf_apply: tf_plan
 	cd src/tf; terraform apply "bin/$(BRANCH_NAME)_$(COMMITID).tfplan"
 
-publish:
+publish: publish_prometheus publish_nodeexporter publish_grafana publish_pwsh
+
+publish_prometheus:
 	$(eval IMAGE_NAME = mcfood_prometheus)
 	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
+publish_nodeexporter:
 	$(eval IMAGE_NAME = mcfood_node_exporter)
 	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
+publish_grafana:
 	$(eval IMAGE_NAME = mcfood_grafana)
 	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
+publish_pwsh:
 	$(eval IMAGE_NAME = mcfood_pwsh)
 	 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z1d8m1n4; docker push $(REGISTRY_NAME)$(REPOSITORY_NAME)$(IMAGE_NAME)$(PUBLISH_TAG)
+
+build_presentation:
+	cd docs; docker run --workdir /mnt -v $${pwd}:/mnt pandoc/latex '/mnt/presentation.md' --embed-resources --standalone -t beamer -o /mnt/presentation.pdf;
+
+lint: lint_mega
+
+lint_mega:
+	docker run -v $${PWD}:/tmp/lint oxsecurity/megalinter:v6
+lint_goodcheck:
+	docker run -t --rm -v $${PWD}:/work sider/goodcheck check
+lint_goodcheck_test:
+	docker run -t --rm -v $${PWD}:/work sider/goodcheck test
+lint_makefile:
+	docker run -v $${PWD}:/tmp/lint -e ENABLE_LINTERS=MAKEFILE_CHECKMAKE oxsecurity/megalinter-ci_light:v6.10.0

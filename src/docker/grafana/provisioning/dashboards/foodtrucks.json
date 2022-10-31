@@ -29,174 +29,206 @@
 	"liveNow": false,
 	"panels": [
 	  {
+		"datasource": {
+		  "type": "datasource",
+		  "uid": "grafana"
+		},
 		"gridPos": {
-		  "h": 1,
+		  "h": 3,
 		  "w": 24,
 		  "x": 0,
 		  "y": 0
 		},
-		"id": 10,
-		"title": "ETL Overview",
-		"type": "row"
+		"id": 18,
+		"options": {
+		  "code": {
+			"language": "plaintext",
+			"showLineNumbers": false,
+			"showMiniMap": false
+		  },
+		  "content": "This dashboard is used to visualize Foodtruck data. See the [source code](https://github.com/brandonmcclure/foodtrucks) for more info.",
+		  "mode": "markdown"
+		},
+		"pluginVersion": "9.2.2",
+		"title": "Overview",
+		"type": "text"
 	  },
 	  {
-		"datasource": {
-		  "type": "prometheus",
-		  "uid": "PBFE396EC0B189D67"
+		"collapsed": true,
+		"gridPos": {
+		  "h": 1,
+		  "w": 24,
+		  "x": 0,
+		  "y": 3
 		},
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "palette-classic"
+		"id": 10,
+		"panels": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "PBFE396EC0B189D67"
 			},
-			"custom": {
-			  "axisLabel": "",
-			  "axisPlacement": "auto",
-			  "barAlignment": 0,
-			  "drawStyle": "line",
-			  "fillOpacity": 0,
-			  "gradientMode": "none",
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
+			"fieldConfig": {
+			  "defaults": {
+				"color": {
+				  "mode": "palette-classic"
+				},
+				"custom": {
+				  "axisCenteredZero": false,
+				  "axisColorMode": "text",
+				  "axisLabel": "",
+				  "axisPlacement": "auto",
+				  "barAlignment": 0,
+				  "drawStyle": "line",
+				  "fillOpacity": 0,
+				  "gradientMode": "none",
+				  "hideFrom": {
+					"legend": false,
+					"tooltip": false,
+					"viz": false
+				  },
+				  "lineInterpolation": "linear",
+				  "lineWidth": 1,
+				  "pointSize": 5,
+				  "scaleDistribution": {
+					"type": "linear"
+				  },
+				  "showPoints": "auto",
+				  "spanNulls": false,
+				  "stacking": {
+					"group": "A",
+					"mode": "none"
+				  },
+				  "thresholdsStyle": {
+					"mode": "off"
+				  }
+				},
+				"mappings": [],
+				"thresholds": {
+				  "mode": "absolute",
+				  "steps": [
+					{
+					  "color": "green",
+					  "value": null
+					},
+					{
+					  "color": "red",
+					  "value": 80
+					}
+				  ]
+				},
+				"unit": "s"
 			  },
-			  "lineInterpolation": "linear",
-			  "lineWidth": 1,
-			  "pointSize": 5,
-			  "scaleDistribution": {
-				"type": "linear"
+			  "overrides": []
+			},
+			"gridPos": {
+			  "h": 8,
+			  "w": 12,
+			  "x": 0,
+			  "y": 9
+			},
+			"id": 4,
+			"options": {
+			  "legend": {
+				"calcs": [],
+				"displayMode": "list",
+				"placement": "bottom",
+				"showLegend": true
 			  },
-			  "showPoints": "auto",
-			  "spanNulls": false,
-			  "stacking": {
-				"group": "A",
-				"mode": "none"
-			  },
-			  "thresholdsStyle": {
-				"mode": "off"
+			  "tooltip": {
+				"mode": "single",
+				"sort": "none"
 			  }
 			},
-			"mappings": [],
-			"thresholds": {
-			  "mode": "absolute",
-			  "steps": [
-				{
-				  "color": "green",
-				  "value": null
+			"targets": [
+			  {
+				"datasource": {
+				  "type": "prometheus",
+				  "uid": "PBFE396EC0B189D67"
 				},
-				{
-				  "color": "red",
-				  "value": 80
-				}
-			  ]
-			},
-			"unit": "s"
+				"editorMode": "code",
+				"expr": "time() - max(data_data_instance_last_complete_epoch_seconds_diff) by(script_name)",
+				"legendFormat": "{{script_name}}",
+				"range": true,
+				"refId": "A"
+			  }
+			],
+			"title": "Time since last run",
+			"type": "timeseries"
 		  },
-		  "overrides": []
-		},
-		"gridPos": {
-		  "h": 8,
-		  "w": 12,
-		  "x": 0,
-		  "y": 1
-		},
-		"id": 4,
-		"options": {
-		  "legend": {
-			"calcs": [],
-			"displayMode": "list",
-			"placement": "bottom"
-		  },
-		  "tooltip": {
-			"mode": "single",
-			"sort": "none"
-		  }
-		},
-		"targets": [
 		  {
 			"datasource": {
 			  "type": "prometheus",
 			  "uid": "PBFE396EC0B189D67"
 			},
-			"editorMode": "code",
-			"expr": "time() - max(data_data_instance_last_complete_epoch_seconds_diff) by(script_name)",
-			"legendFormat": "{{script_name}}",
-			"range": true,
-			"refId": "A"
-		  }
-		],
-		"title": "Time since last run",
-		"type": "timeseries"
-	  },
-	  {
-		"datasource": {
-		  "type": "prometheus",
-		  "uid": "PBFE396EC0B189D67"
-		},
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "thresholds"
-			},
-			"custom": {
-			  "fillOpacity": 70,
-			  "lineWidth": 0,
-			  "spanNulls": false
-			},
-			"mappings": [],
-			"thresholds": {
-			  "mode": "absolute",
-			  "steps": [
-				{
-				  "color": "green",
-				  "value": null
+			"fieldConfig": {
+			  "defaults": {
+				"color": {
+				  "mode": "thresholds"
 				},
-				{
-				  "color": "red",
-				  "value": 1
+				"custom": {
+				  "fillOpacity": 70,
+				  "lineWidth": 0,
+				  "spanNulls": false
+				},
+				"mappings": [],
+				"thresholds": {
+				  "mode": "absolute",
+				  "steps": [
+					{
+					  "color": "green",
+					  "value": null
+					},
+					{
+					  "color": "red",
+					  "value": 1
+					}
+				  ]
 				}
-			  ]
-			}
-		  },
-		  "overrides": []
-		},
-		"gridPos": {
-		  "h": 8,
-		  "w": 12,
-		  "x": 12,
-		  "y": 1
-		},
-		"id": 2,
-		"options": {
-		  "alignValue": "left",
-		  "legend": {
-			"displayMode": "list",
-			"placement": "bottom"
-		  },
-		  "mergeValues": true,
-		  "rowHeight": 0.9,
-		  "showValue": "auto",
-		  "tooltip": {
-			"mode": "single",
-			"sort": "none"
-		  }
-		},
-		"targets": [
-		  {
-			"datasource": {
-			  "type": "prometheus",
-			  "uid": "PBFE396EC0B189D67"
+			  },
+			  "overrides": []
 			},
-			"editorMode": "code",
-			"expr": "node_textfile_scrape_error",
-			"legendFormat": "{{job}}",
-			"range": true,
-			"refId": "A"
+			"gridPos": {
+			  "h": 8,
+			  "w": 12,
+			  "x": 12,
+			  "y": 9
+			},
+			"id": 2,
+			"options": {
+			  "alignValue": "left",
+			  "legend": {
+				"displayMode": "list",
+				"placement": "bottom",
+				"showLegend": false
+			  },
+			  "mergeValues": true,
+			  "rowHeight": 0.9,
+			  "showValue": "auto",
+			  "tooltip": {
+				"mode": "single",
+				"sort": "none"
+			  }
+			},
+			"targets": [
+			  {
+				"datasource": {
+				  "type": "prometheus",
+				  "uid": "PBFE396EC0B189D67"
+				},
+				"editorMode": "code",
+				"expr": "node_textfile_scrape_error",
+				"legendFormat": "{{job}}",
+				"range": true,
+				"refId": "A"
+			  }
+			],
+			"title": "Textfile error",
+			"type": "state-timeline"
 		  }
 		],
-		"title": "Textfile error",
-		"type": "state-timeline"
+		"title": "ETL Overview",
+		"type": "row"
 	  },
 	  {
 		"collapsed": false,
@@ -204,7 +236,7 @@
 		  "h": 1,
 		  "w": 24,
 		  "x": 0,
-		  "y": 9
+		  "y": 4
 		},
 		"id": 8,
 		"panels": [],
@@ -213,6 +245,117 @@
 	  },
 	  {
 		"datasource": {
+		  "type": "mssql",
+		  "uid": "P83BD930A08C29D7D"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "thresholds"
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 7,
+		  "w": 6,
+		  "x": 0,
+		  "y": 5
+		},
+		"id": 16,
+		"options": {
+		  "orientation": "horizontal",
+		  "reduceOptions": {
+			"calcs": [
+			  "last"
+			],
+			"fields": "",
+			"values": true
+		  },
+		  "showThresholdLabels": false,
+		  "showThresholdMarkers": true
+		},
+		"pluginVersion": "9.2.2",
+		"targets": [
+		  {
+			"dataset": "foodtrucks",
+			"datasource": {
+			  "type": "mssql",
+			  "uid": "P83BD930A08C29D7D"
+			},
+			"editorMode": "code",
+			"format": "table",
+			"rawQuery": true,
+			"rawSql": "SELECT TOP(50) COUNT(*) FROM foodtrucks.dbo.mostrecent_raw WHERE Applicant IN ($Applicant) and Status IN ($Status) ",
+			"refId": "A",
+			"sql": {
+			  "columns": [
+				{
+				  "name": "COUNT",
+				  "parameters": [
+					{
+					  "name": "*",
+					  "type": "functionParameter"
+					}
+				  ],
+				  "type": "function"
+				}
+			  ],
+			  "groupBy": [
+				{
+				  "property": {
+					"type": "string"
+				  },
+				  "type": "groupBy"
+				}
+			  ],
+			  "limit": 50,
+			  "whereJsonTree": {
+				"children1": {
+				  "888ba898-4567-489a-bcde-f1842b32f8aa": {
+					"properties": {
+					  "field": "Applicant",
+					  "operator": "select_any_in",
+					  "value": [
+						"$Applicant"
+					  ],
+					  "valueSrc": [
+						"value"
+					  ],
+					  "valueType": [
+						"text"
+					  ]
+					},
+					"type": "rule"
+				  }
+				},
+				"id": "8a9b8ab9-89ab-4cde-b012-31842b32f8aa",
+				"type": "group"
+			  },
+			  "whereString": "Applicant IN ('$Applicant')"
+			},
+			"table": "dbo.mostrecent_raw"
+		  }
+		],
+		"title": "Total Permits",
+		"type": "gauge"
+	  },
+	  {
+		"datasource": {
 		  "type": "prometheus",
 		  "uid": "PBFE396EC0B189D67"
 		},
@@ -222,6 +365,8 @@
 			  "mode": "palette-classic"
 			},
 			"custom": {
+			  "axisCenteredZero": false,
+			  "axisColorMode": "text",
 			  "axisLabel": "",
 			  "axisPlacement": "auto",
 			  "barAlignment": 0,
@@ -268,17 +413,18 @@
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 8,
-		  "w": 12,
-		  "x": 0,
-		  "y": 10
+		  "h": 7,
+		  "w": 6,
+		  "x": 6,
+		  "y": 5
 		},
 		"id": 6,
 		"options": {
 		  "legend": {
 			"calcs": [],
 			"displayMode": "list",
-			"placement": "bottom"
+			"placement": "bottom",
+			"showLegend": true
 		  },
 		  "tooltip": {
 			"mode": "single",
@@ -300,10 +446,292 @@
 		],
 		"title": "Time to Expiration",
 		"type": "timeseries"
+	  },
+	  {
+		"datasource": {
+		  "type": "mssql",
+		  "uid": "P83BD930A08C29D7D"
+		},
+		"description": "Colors indicate the Permit status",
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "thresholds"
+			},
+			"custom": {
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "green",
+				  "value": 1
+				},
+				{
+				  "color": "orange",
+				  "value": 2
+				},
+				{
+				  "color": "red",
+				  "value": 3
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 7,
+		  "w": 12,
+		  "x": 12,
+		  "y": 5
+		},
+		"id": 14,
+		"options": {
+		  "basemap": {
+			"config": {},
+			"name": "Layer 0",
+			"type": "default"
+		  },
+		  "controls": {
+			"mouseWheelZoom": true,
+			"showAttribution": true,
+			"showDebug": false,
+			"showMeasure": false,
+			"showScale": true,
+			"showZoom": true
+		  },
+		  "layers": [
+			{
+			  "config": {
+				"showLegend": false,
+				"style": {
+				  "color": {
+					"field": "Status_int",
+					"fixed": "dark-green"
+				  },
+				  "opacity": 0.4,
+				  "rotation": {
+					"fixed": 0,
+					"max": 360,
+					"min": -360,
+					"mode": "mod"
+				  },
+				  "size": {
+					"fixed": 5,
+					"max": 15,
+					"min": 2
+				  },
+				  "symbol": {
+					"fixed": "img/icons/marker/circle.svg",
+					"mode": "fixed"
+				  },
+				  "text": {
+					"fixed": "",
+					"mode": "field"
+				  },
+				  "textConfig": {
+					"fontSize": 12,
+					"offsetX": 0,
+					"offsetY": 0,
+					"textAlign": "center",
+					"textBaseline": "middle"
+				  }
+				}
+			  },
+			  "filterData": {
+				"id": "byRefId",
+				"options": "A"
+			  },
+			  "location": {
+				"mode": "auto"
+			  },
+			  "name": "Layer 1",
+			  "tooltip": true,
+			  "type": "markers"
+			}
+		  ],
+		  "tooltip": {
+			"mode": "none"
+		  },
+		  "view": {
+			"allLayers": true,
+			"id": "fit",
+			"lat": 0,
+			"lon": 0,
+			"zoom": 15
+		  }
+		},
+		"pluginVersion": "9.2.2",
+		"targets": [
+		  {
+			"dataset": "foodtrucks",
+			"datasource": {
+			  "type": "mssql",
+			  "uid": "P83BD930A08C29D7D"
+			},
+			"editorMode": "code",
+			"format": "table",
+			"hide": false,
+			"rawQuery": true,
+			"rawSql": "SELECT TOP(100) locationid,Latitude, Longitude, Applicant, FacilityType, Status, FoodItems,\r\ncase when Status in ('APPROVED','ISSUED') then 1 \r\nwhen Status in ('REQUESTED','ONLINE') then 2\r\nwhen Status in ('EXPIRED','SUSPEND') then 3\r\nelse 0 END as [Status_int] \r\nFROM foodtrucks.dbo.mostrecent_raw r\r\ncross Apply STRING_SPLIT(r.FoodItems ,':') ss\r\nWHERE Applicant IN ($Applicant) AND Latitude <> '0' and Longitude <> '0'\r\nand Status in ($Status)\r\nand ss.Value in ($Fooditems)",
+			"refId": "A",
+			"sql": {
+			  "columns": [
+				{
+				  "parameters": [
+					{
+					  "name": "Latitude",
+					  "type": "functionParameter"
+					}
+				  ],
+				  "type": "function"
+				},
+				{
+				  "parameters": [
+					{
+					  "name": "Longitude",
+					  "type": "functionParameter"
+					}
+				  ],
+				  "type": "function"
+				}
+			  ],
+			  "groupBy": [
+				{
+				  "property": {
+					"type": "string"
+				  },
+				  "type": "groupBy"
+				}
+			  ],
+			  "limit": 50,
+			  "whereJsonTree": {
+				"children1": {
+				  "888ba898-4567-489a-bcde-f1842b32f8aa": {
+					"properties": {
+					  "field": "Applicant",
+					  "operator": "select_any_in",
+					  "value": [
+						"$Applicant"
+					  ],
+					  "valueSrc": [
+						"value"
+					  ],
+					  "valueType": [
+						"text"
+					  ]
+					},
+					"type": "rule"
+				  }
+				},
+				"id": "8a9b8ab9-89ab-4cde-b012-31842b32f8aa",
+				"type": "group"
+			  },
+			  "whereString": "Applicant IN ('$Applicant')"
+			},
+			"table": "dbo.mostrecent_raw"
+		  }
+		],
+		"title": "Location Map",
+		"type": "geomap"
+	  },
+	  {
+		"datasource": {
+		  "type": "mssql",
+		  "uid": "P83BD930A08C29D7D"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "thresholds"
+			},
+			"custom": {
+			  "align": "auto",
+			  "displayMode": "auto",
+			  "inspect": false
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 9,
+		  "w": 24,
+		  "x": 0,
+		  "y": 12
+		},
+		"id": 20,
+		"options": {
+		  "footer": {
+			"fields": "",
+			"reducer": [
+			  "sum"
+			],
+			"show": false
+		  },
+		  "showHeader": true
+		},
+		"pluginVersion": "9.2.2",
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "mssql",
+			  "uid": "P83BD930A08C29D7D"
+			},
+			"editorMode": "code",
+			"format": "table",
+			"rawQuery": true,
+			"rawSql": "SELECT TOP(100) locationid, Applicant, FacilityType, LocationDescription,Address, permit, status, fooditems, schedule, Approved, ExpirationDate\r\nFROM foodtrucks.dbo.mostrecent_raw r\r\n  cross Apply STRING_SPLIT(r.FoodItems ,':') ss\r\nWHERE Applicant IN ($Applicant) AND Latitude <> '0' and Longitude <> '0'\r\nand Status in ($Status)\r\nand ss.Value in ($Fooditems)",
+			"refId": "A",
+			"sql": {
+			  "columns": [
+				{
+				  "parameters": [],
+				  "type": "function"
+				}
+			  ],
+			  "groupBy": [
+				{
+				  "property": {
+					"type": "string"
+				  },
+				  "type": "groupBy"
+				}
+			  ],
+			  "limit": 50
+			}
+		  }
+		],
+		"title": "Raw Data",
+		"type": "table"
 	  }
 	],
 	"refresh": "10s",
-	"schemaVersion": 36,
+	"schemaVersion": 37,
 	"style": "dark",
 	"tags": [],
 	"templating": {
@@ -312,10 +740,10 @@
 		  "current": {
 			"selected": true,
 			"text": [
-			  "BH & MT LLC"
+			  "All"
 			],
 			"value": [
-			  "BH & MT LLC"
+			  "$__all"
 			]
 		  },
 		  "datasource": {
@@ -332,6 +760,60 @@
 			"query": "label_values(location_expiration_epoch,Applicant)",
 			"refId": "StandardVariableQuery"
 		  },
+		  "refresh": 2,
+		  "regex": "",
+		  "skipUrlSync": false,
+		  "sort": 0,
+		  "type": "query"
+		},
+		{
+		  "current": {
+			"selected": true,
+			"text": [
+			  "All"
+			],
+			"value": [
+			  "$__all"
+			]
+		  },
+		  "datasource": {
+			"type": "mssql",
+			"uid": "P83BD930A08C29D7D"
+		  },
+		  "definition": "select distinct Status from [foodtrucks].[dbo].[mostrecent_raw]",
+		  "hide": 0,
+		  "includeAll": true,
+		  "multi": true,
+		  "name": "Status",
+		  "options": [],
+		  "query": "select distinct Status from [foodtrucks].[dbo].[mostrecent_raw]",
+		  "refresh": 1,
+		  "regex": "",
+		  "skipUrlSync": false,
+		  "sort": 0,
+		  "type": "query"
+		},
+		{
+		  "current": {
+			"selected": true,
+			"text": [
+			  "All"
+			],
+			"value": [
+			  "$__all"
+			]
+		  },
+		  "datasource": {
+			"type": "mssql",
+			"uid": "P83BD930A08C29D7D"
+		  },
+		  "definition": "  select distinct ss.value as [fooditems] from [foodtrucks].[dbo].[mostrecent_raw] r\n  cross Apply STRING_SPLIT(r.FoodItems ,':') ss\nwhere Applicant in ($Applicant)\nand Status in ($Status)",
+		  "hide": 0,
+		  "includeAll": true,
+		  "multi": true,
+		  "name": "Fooditems",
+		  "options": [],
+		  "query": "  select distinct ss.value as [fooditems] from [foodtrucks].[dbo].[mostrecent_raw] r\n  cross Apply STRING_SPLIT(r.FoodItems ,':') ss\nwhere Applicant in ($Applicant)\nand Status in ($Status)",
 		  "refresh": 2,
 		  "regex": "",
 		  "skipUrlSync": false,
