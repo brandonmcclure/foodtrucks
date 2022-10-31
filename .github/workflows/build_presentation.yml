@@ -29,7 +29,7 @@ jobs:
       - uses: addnab/docker-run-action@v3
         with:
           image: pandoc/latex:latest
-          options: --workdir /mnt -v ${{ github.workspace }}/docs:/mnt
+          options: --user root --workdir /mnt -v ${{ github.workspace }}/docs:/mnt
           run: |
             '/mnt/presentation.md' --embed-resources --standalone -t beamer -o /mnt/presentation.pdf;
       - name: Artifact prep - all
